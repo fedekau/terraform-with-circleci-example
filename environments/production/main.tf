@@ -16,3 +16,9 @@ terraform {
     encrypt = true
   }
 }
+
+module "production-infrastructure" {
+  source = "../../modules/infrastructure"
+
+  environment = "production"
+}

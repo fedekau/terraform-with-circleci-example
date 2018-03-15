@@ -16,3 +16,9 @@ terraform {
     encrypt = true
   }
 }
+
+module "staging-infrastructure" {
+  source = "../../modules/infrastructure"
+
+  environment = "staging"
+}
