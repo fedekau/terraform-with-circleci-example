@@ -1,6 +1,7 @@
-resource "aws_security_group" "allow_ssh" {
+resource "aws_security_group" "allow-ssh" {
   name        = "allow_ssh"
   description = "Allow incoming ssh connections."
+  vpc_id      = "${aws_vpc.main.id}"
 
   ingress {
     from_port   = 22
