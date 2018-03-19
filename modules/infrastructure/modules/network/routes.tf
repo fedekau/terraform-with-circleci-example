@@ -7,6 +7,7 @@ resource "aws_route_table" "public-a" {
   }
 
   tags {
+    name        = "public-a"
     environment = "${var.environment}"
   }
 }
@@ -25,6 +26,7 @@ resource "aws_route_table" "public-b" {
   }
 
   tags {
+    name        = "public-b"
     environment = "${var.environment}"
   }
 }
@@ -43,6 +45,7 @@ resource "aws_route_table" "private-a" {
   }
 
   tags {
+    name        = "private-a"
     environment = "${var.environment}"
   }
 }
@@ -61,6 +64,7 @@ resource "aws_route_table" "private-b" {
   }
 
   tags {
+    name        = "private-b"
     environment = "${var.environment}"
   }
 }
