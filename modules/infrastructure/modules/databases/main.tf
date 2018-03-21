@@ -14,21 +14,22 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"]
 }
 
-resource "aws_instance" "web" {
+resource "aws_instance" "db" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
 
-  subnet_id              = "${var.public-a-subnet-id}"
-  vpc_security_group_ids = ["${var.allow-external-ssh-sg-id}"]
+  subnet_id              = "${var.private-a-subnet-id}"
+  vpc_security_group_ids = ["${var.allow-internal-ssh-sg-id}"]
 
-  key_name = "${aws_key_pair.id_rsa_kauffman_federico.key_name}"
+  key_name = "id_rsa_kauffman_federico"
 
   tags {
     environment = "${var.environment}"
   }
 }
 
-resource "aws_key_pair" "id_rsa_kauffman_federico" {
-  key_name   = "id_rsa_kauffman_federico"
-  public_key = "${file("~/.ssh/id_rsa_kauffman_federico.pub")}"
-}
+# resource "aws_key_pair" "id_rsa_kauffman_federico" {
+#   key_name   = "id_rsa_kauffman_federico"
+#   public_key = "${file("~/.ssh/id_rsa_kauffman_federico.pub")}"
+# }
+

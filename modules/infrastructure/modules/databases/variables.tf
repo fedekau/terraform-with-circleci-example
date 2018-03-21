@@ -5,4 +5,4 @@ variable "public-b-subnet-id" {}
 variable "private-a-subnet-id" {}
 variable "private-b-subnet-id" {}
 
-variable "allow-external-ssh-sg-id" {}
+variable "allow-internal-ssh-sg-id" {}

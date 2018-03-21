@@ -14,6 +14,10 @@ output "private-b-subnet-id" {
   value = "${aws_subnet.private-b.id}"
 }
 
-output "allow-ssh-sg-id" {
-  value = "${aws_security_group.allow-ssh.id}"
+output "allow-external-ssh-sg-id" {
+  value = "${aws_security_group.allow-external-ssh.id}"
+}
+
+output "allow-internal-ssh-sg-id" {
+  value = "${aws_security_group.allow-internal-ssh.id}"
 }
