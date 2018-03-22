@@ -19,7 +19,7 @@ resource "aws_instance" "web" {
   instance_type = "t2.micro"
 
   subnet_id              = "${var.public-a-subnet-id}"
-  vpc_security_group_ids = ["${var.allow-external-ssh-sg-id}"]
+  vpc_security_group_ids = ["${aws_security_group.allow-external-ssh.id}"]
 
   key_name = "${aws_key_pair.id_rsa_kauffman_federico.key_name}"
 

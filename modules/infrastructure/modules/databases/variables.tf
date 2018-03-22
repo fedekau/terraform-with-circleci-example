@@ -1,8 +1,6 @@
 variable "environment" {}
 
-variable "public-a-subnet-id" {}
-variable "public-b-subnet-id" {}
+variable "vpc-id" {}
+
 variable "private-a-subnet-id" {}
 variable "private-b-subnet-id" {}
-
-variable "allow-internal-ssh-sg-id" {}

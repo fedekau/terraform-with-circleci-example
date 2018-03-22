@@ -1,35 +1,23 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"]
-}
-
-resource "aws_instance" "db" {
-  ami           = "${data.aws_ami.ubuntu.id}"
-  instance_type = "t2.micro"
-
-  subnet_id              = "${var.private-a-subnet-id}"
-  vpc_security_group_ids = ["${var.allow-internal-ssh-sg-id}"]
-
-  key_name = "id_rsa_kauffman_federico"
+resource "aws_db_subnet_group" "rds-private-subnet-group" {
+  name       = "rds-private-subnet-group"
+  subnet_ids = ["${var.private-a-subnet-id}", "${var.private-b-subnet-id}"]
 
   tags {
     environment = "${var.environment}"
   }
 }
 
-# resource "aws_key_pair" "id_rsa_kauffman_federico" {
-#   key_name   = "id_rsa_kauffman_federico"
-#   public_key = "${file("~/.ssh/id_rsa_kauffman_federico.pub")}"
-# }
-
+resource "aws_db_instance" "master" {
+  identifier           = "${var.environment}-master"
+  allocated_storage    = 8
+  storage_type         = "gp2"
+  engine               = "mysql"
+  engine_version       = "5.7"
+  instance_class       = "db.t2.micro"
+  name                 = "${var.environment}"
+  username             = "user"
+  password             = "password"
+  db_subnet_group_name = "${aws_db_subnet_group.rds-private-subnet-group.name}"
+  skip_final_snapshot  = true
+  multi_az             = true
+}
