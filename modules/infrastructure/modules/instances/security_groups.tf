@@ -30,3 +30,16 @@ resource "aws_security_group" "allow-all-http-outgoing" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+resource "aws_security_group" "allow-mysql-egress" {
+  name        = "allow-mysql-egress"
+  description = "Allow outgoing mysql connections to the VPC."
+  vpc_id      = "${var.vpc-id}"
+
+  egress {
+    from_port   = 3306
+    to_port     = 3306
+    protocol    = "tcp"
+    cidr_blocks = ["${var.vpc-cidr-block}"]
+  }
+}
