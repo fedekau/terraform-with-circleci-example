@@ -20,6 +20,7 @@ module "databases" {
   environment = "${var.environment}"
 
   vpc-id              = "${module.network.vpc-id}"
+  vpc-cidr-block      = "${module.network.vpc-cidr-block}"
   private-a-subnet-id = "${module.network.private-a-subnet-id}"
   private-b-subnet-id = "${module.network.private-b-subnet-id}"
 }
