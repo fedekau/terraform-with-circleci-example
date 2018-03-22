@@ -5,7 +5,7 @@ provider "aws" {
 module "production-state" {
   source = "../../modules/state"
 
-  environment = "production"
+  environment = "${var.environment}"
 }
 
 terraform {
@@ -20,5 +20,5 @@ terraform {
 module "production-infrastructure" {
   source = "../../modules/infrastructure"
 
-  environment = "production"
+  environment = "${var.environment}"
 }
