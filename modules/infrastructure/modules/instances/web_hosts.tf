@@ -1,19 +1,3 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"]
-}
-
 resource "aws_instance" "web" {
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
@@ -43,9 +27,4 @@ resource "aws_instance" "web" {
   tags {
     environment = "${var.environment}"
   }
-}
-
-resource "aws_key_pair" "id_dummy" {
-  key_name   = "id_dummy"
-  public_key = "${file("../../.keys/id_dummy.pub")}"
 }
