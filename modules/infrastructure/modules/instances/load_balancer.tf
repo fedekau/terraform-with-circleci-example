@@ -1,7 +1,7 @@
 resource "aws_alb" "web" {
   name            = "web-${var.environment}"
   internal        = false
-  security_groups = ["${aws_security_group.allow-all-http-incoming.id}"]
+  security_groups = ["${aws_security_group.web-alb.id}"]
   subnets         = ["${local.subnets_ids}"]
 
   tags {
@@ -28,7 +28,9 @@ resource "aws_alb_listener" "web" {
 }
 
 resource "aws_alb_target_group_attachment" "web" {
+  count = 2
+
   target_group_arn = "${aws_alb_target_group.web.arn}"
-  target_id        = "${aws_instance.web.*.id}"
+  target_id        = "${element(aws_instance.web.*.id, count.index)}"
   port             = 3000
 }

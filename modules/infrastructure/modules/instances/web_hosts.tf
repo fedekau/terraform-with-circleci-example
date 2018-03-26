@@ -14,9 +14,7 @@ resource "aws_instance" "web" {
   subnet_id = "${element(local.subnets_ids, count.index)}"
 
   vpc_security_group_ids = [
-    "${aws_security_group.allow-external-ssh.id}",
-    "${aws_security_group.allow-all-http-outgoing.id}",
-    "${aws_security_group.allow-mysql-egress.id}",
+    "${aws_security_group.web.id}",
   ]
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
