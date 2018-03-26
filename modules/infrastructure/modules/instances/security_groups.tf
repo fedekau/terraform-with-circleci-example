@@ -31,6 +31,26 @@ resource "aws_security_group" "allow-all-http-outgoing" {
   }
 }
 
+resource "aws_security_group" "allow-all-http-incoming" {
+  name        = "allow-all-http-incoming"
+  description = "Allow incoming http connections from the world."
+  vpc_id      = "${var.vpc-id}"
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_security_group" "allow-mysql-egress" {
   name        = "allow-mysql-egress"
   description = "Allow outgoing mysql connections to the VPC."
