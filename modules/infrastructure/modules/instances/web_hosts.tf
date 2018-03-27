@@ -31,31 +31,30 @@ resource "aws_instance" "web" {
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
-  provisioner "file" {
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("../../.keys/id_dummy")}"
-    }
+  tags {
+    environment = "${var.environment}"
+  }
+}
 
+resource "null_resource" "web" {
+  count = "${var.count}"
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = "${file("../../.keys/id_dummy")}"
+    host        = "${element(aws_instance.web.*.public_ip, count.index)}"
+  }
+
+  provisioner "file" {
     content     = "${data.template_file.init.rendered}"
     destination = "/home/ubuntu/init.sh"
   }
 
   provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = "${file("../../.keys/id_dummy")}"
-    }
-
     inline = [
       "chmod +x /home/ubuntu/init.sh",
       "sudo /home/ubuntu/init.sh",
     ]
-  }
-
-  tags {
-    environment = "${var.environment}"
   }
 }
