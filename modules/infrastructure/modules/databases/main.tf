@@ -15,7 +15,7 @@ resource "aws_db_instance" "master" {
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
   name                 = "${var.environment}"
-  username             = "user"
+  username             = "username"
   password             = "password"
   db_subnet_group_name = "${aws_db_subnet_group.rds-private-subnet-group.name}"
   skip_final_snapshot  = true

@@ -18,9 +18,16 @@ sudo ln -s /home/ubuntu/.nvm/versions/node/v9.9.0/bin/node /usr/bin/node
 # Install http-server for serving simple static files
 npm install http-server -g --quiet
 
-# Create an instance-ip.txt file
+# Create public folder
 mkdir /home/ubuntu/public
-curl http://169.254.169.254/latest/meta-data/local-ipv4 > /home/ubuntu/public/instance-ip.txt
+
+# Create an instance-status.txt file
+curl http://169.254.169.254/latest/meta-data/local-ipv4 > /home/ubuntu/public/instance-status.txt
+
+echo "" >> /home/ubuntu/public/instance-status.txt
+
+# Check db connection and save DB time
+mysql --host=${db_endpoint} --port=${db_port} --database=${db_name} --user=${db_username} --password=${db_password} -e 'SELECT NOW();' >> /home/ubuntu/public/instance-status.txt
 
 sudo systemctl stop web.service
 sudo systemctl disable web.service
@@ -47,5 +54,3 @@ sudo echo "WantedBy=multi-user.target" >> /etc/systemd/system/web.service
 
 sudo systemctl enable web.service
 sudo systemctl start web.service
-
-touch executed.txt

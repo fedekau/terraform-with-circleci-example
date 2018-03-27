@@ -7,6 +7,14 @@ locals {
 
 data "template_file" "init" {
   template = "${file("${path.module}/templates/init.tpl")}"
+
+  vars {
+    db_endpoint = "${var.db_endpoint}"
+    db_port     = 3306
+    db_name     = "${var.environment}"
+    db_username = "username"
+    db_password = "password"
+  }
 }
 
 resource "aws_instance" "web" {
@@ -23,8 +31,6 @@ resource "aws_instance" "web" {
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
-  # user_data = "${data.template_file.init.rendered}"
-
   provisioner "file" {
     connection {
       type        = "ssh"
@@ -35,6 +41,7 @@ resource "aws_instance" "web" {
     content     = "${data.template_file.init.rendered}"
     destination = "/home/ubuntu/init.sh"
   }
+
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -47,6 +54,7 @@ resource "aws_instance" "web" {
       "sudo /home/ubuntu/init.sh",
     ]
   }
+
   tags {
     environment = "${var.environment}"
   }

@@ -9,3 +9,5 @@ variable "public-b-subnet-id" {}
 variable "count" {
   default = 2
 }
+
+variable "db_endpoint" {}
