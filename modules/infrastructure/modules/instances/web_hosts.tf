@@ -5,6 +5,10 @@ locals {
   ]
 }
 
+data "template_file" "init" {
+  template = "${file("${path.module}/templates/init.tpl")}"
+}
+
 resource "aws_instance" "web" {
   count = "2"
 
@@ -19,6 +23,18 @@ resource "aws_instance" "web" {
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
+  # user_data = "${data.template_file.init.rendered}"
+
+  provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = "${file("../../.keys/id_dummy")}"
+    }
+
+    content     = "${data.template_file.init.rendered}"
+    destination = "/home/ubuntu/init.sh"
+  }
   provisioner "remote-exec" {
     connection {
       type        = "ssh"
@@ -27,12 +43,10 @@ resource "aws_instance" "web" {
     }
 
     inline = [
-      "sudo apt-get install mysql-client -y",
-      "curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -",
-      "sudo apt-get install -y nodejs",
+      "chmod +x /home/ubuntu/init.sh",
+      "sudo /home/ubuntu/init.sh",
     ]
   }
-
   tags {
     environment = "${var.environment}"
   }
