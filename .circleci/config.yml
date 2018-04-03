@@ -13,6 +13,14 @@ default_config: &default_config
     - image: *base_image
   working_directory: *working_directory
 
+repo_cache_key: &repo_cache_key
+  v1-repo-{{ .Branch }}-{{ .Revision }}
+
+# Step to restore repository from cache
+restore_repo: &restore_repo
+  restore_cache:
+    key: *repo_cache_key
+
 jobs:
 
   build:
@@ -20,21 +28,57 @@ jobs:
     steps:
       - checkout
       - run:
-          name: terraform init
+          name: set environment
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd environments/production
-              terraform init
+              echo "production" > /tmp/.terraform_environment
+            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+              echo "staging" > /tmp/.terraform_environment
             fi
       - run:
-          name: terraform plan
+          name: terraform init
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              cd environments/production
-              terraform plan
+              TERRAFORM_ENVIRONMENT=$(cat /tmp/.terraform_environment)
+              cd environments/$TERRAFORM_ENVIRONMENT
+              terraform init
+      - run:
+          name: terraform fmt
+          command: |
+            TERRAFORM_ENVIRONMENT=$(cat /tmp/.terraform_environment)
+            cd environments/$TERRAFORM_ENVIRONMENT
+
+            if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
+              echo "Format of this terraform files is not appropiate:"
+              echo
+
+              cat fmt_result.txt
+              rm fmt_result.txt
+              git checkout -- .
+
+              echo
+              echo "Please run terraform fmt"
+
+              exit 1
             fi
+      - save_cache:
+          key: *repo_cache_key
+          paths:
+            - *working_directory
+
+  plan:
+    <<: *default_config
+    steps:
+      - *restore_repo
+
+  apply:
+    <<: *default_config
+    steps:
+      - *restore_repo
+
 workflows:
   version: 2
   build_plan_apply:
     jobs:
       - build
+      - plan
+      - apply
