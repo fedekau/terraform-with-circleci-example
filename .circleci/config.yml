@@ -1,14 +1,40 @@
 version: 2
+
+references:
+
+base_image: &base_image
+  hashicorp/terraform:light
+
+working_directory: &working_directory
+  ~/example
+
+default_config: &default_config
+  docker:
+    - image: *base_image
+  working_directory: *working_directory
+
 jobs:
+
   build:
-    docker:
-      - image: hashicorp/terraform:light
-
-    working_directory: ~/project
-
+    <<: *default_config
     steps:
       - checkout
       - run:
           name: terraform init
           command: |
-            terraform -v
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              cd environments/production
+              terraform init
+            fi
+      - run:
+          name: terraform plan
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              cd environments/production
+              terraform plan
+            fi
+workflows:
+  version: 2
+  build_plan_apply:
+    jobs:
+      - build
