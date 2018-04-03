@@ -12,6 +12,8 @@ default_config: &default_config
   docker:
     - image: *base_image
   working_directory: *working_directory
+  environment:
+    BASH_ENV: /root/.bashrc
 
 repo_cache_key: &repo_cache_key
   v1-repo-{{ .Branch }}-{{ .Revision }}
@@ -21,30 +23,34 @@ restore_repo: &restore_repo
   restore_cache:
     key: *repo_cache_key
 
+set_terraform_environment: &set_terraform_environment
+  run:
+    name: set terraform environment
+    command: |
+      cd && touch $BASH_ENV
+
+      if [ "${CIRCLE_BRANCH}" == "master" ]; then
+        echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
+      elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+        echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
+      fi
 jobs:
 
   build:
     <<: *default_config
     steps:
       - checkout
-      - run:
-          name: set environment
-          command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
-              echo "production" > /tmp/.terraform_environment
-            elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
-              echo "staging" > /tmp/.terraform_environment
-            fi
+      - *set_terraform_environment
       - run:
           name: terraform init
           command: |
-              TERRAFORM_ENVIRONMENT=$(cat /tmp/.terraform_environment)
-              cd environments/$TERRAFORM_ENVIRONMENT
-              terraform init
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform init
       - run:
           name: terraform fmt
           command: |
-            TERRAFORM_ENVIRONMENT=$(cat /tmp/.terraform_environment)
+            source $BASH_ENV
             cd environments/$TERRAFORM_ENVIRONMENT
 
             if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
