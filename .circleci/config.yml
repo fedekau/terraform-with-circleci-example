@@ -37,7 +37,7 @@ set_terraform_environment: &set_terraform_environment
 
       if [ "${CIRCLE_BRANCH}" == "master" ]; then
         echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
-      elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+      else
         echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
       fi
 
