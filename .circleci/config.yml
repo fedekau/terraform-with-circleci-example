@@ -40,6 +40,14 @@ set_terraform_environment: &set_terraform_environment
       elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
         echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
       fi
+
+terraform_init: &terraform_init
+  run:
+    name: terraform init
+    command: |
+      source $BASH_ENV
+      cd environments/$TERRAFORM_ENVIRONMENT
+      terraform init
 jobs:
 
   build:
@@ -73,12 +81,7 @@ jobs:
     steps:
       - *restore_repo
       - *set_terraform_environment
-      - run:
-          name: terraform init
-          command: |
-            source $BASH_ENV
-            cd environments/$TERRAFORM_ENVIRONMENT
-            terraform init
+      - *terraform_init
       - run:
           name: terraform plan
           command: |
@@ -94,16 +97,16 @@ jobs:
     <<: *default_config
     steps:
       - *restore_repo
+      - *set_terraform_environment
+      - *terraform_init
       - attach_workspace:
           at: *working_directory
-      - *set_terraform_environment
       - run:
           name: terraform apply
           command: |
             source $BASH_ENV
             cd environments/$TERRAFORM_ENVIRONMENT
             terraform apply ../../terraform.plan
-
 
 workflows:
   version: 2
