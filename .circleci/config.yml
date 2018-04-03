@@ -84,22 +84,25 @@ jobs:
           command: |
             source $BASH_ENV
             cd environments/$TERRAFORM_ENVIRONMENT
-            terraform plan -out=terraform.plan
-      - *save_repo
+            terraform plan -out=../../terraform.plan
+      - persist_to_workspace:
+          root: *working_directory
+          paths:
+            - terraform.plan
 
   apply:
     <<: *default_config
     steps:
       - *restore_repo
+      - attach_workspace:
+          at: *working_directory
       - *set_terraform_environment
       - run:
           name: terraform apply
           command: |
             source $BASH_ENV
             cd environments/$TERRAFORM_ENVIRONMENT
-            terraform apply terraform.plan
-            rm terraform.plan
-      - *save_repo
+            terraform apply ../../terraform.plan
 
 
 workflows:
