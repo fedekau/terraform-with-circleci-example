@@ -17,6 +17,10 @@ data "template_file" "init" {
   }
 }
 
+data "template_file" "instance-status" {
+  template = "${file("${path.module}/templates/instance-status.tpl")}"
+}
+
 resource "aws_instance" "web" {
   count = "${var.count}"
 
@@ -49,6 +53,11 @@ resource "null_resource" "web" {
   provisioner "file" {
     content     = "${data.template_file.init.rendered}"
     destination = "/home/ubuntu/init.sh"
+  }
+
+  provisioner "file" {
+    content     = "${data.template_file.instance-status.rendered}"
+    destination = "/home/ubuntu/instance-status.conf"
   }
 
   provisioner "remote-exec" {
