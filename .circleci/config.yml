@@ -42,12 +42,6 @@ jobs:
       - checkout
       - *set_terraform_environment
       - run:
-          name: terraform init
-          command: |
-            source $BASH_ENV
-            cd environments/$TERRAFORM_ENVIRONMENT
-            terraform init
-      - run:
           name: terraform fmt
           command: |
             source $BASH_ENV
@@ -75,6 +69,19 @@ jobs:
     <<: *default_config
     steps:
       - *restore_repo
+      - *set_terraform_environment
+      - run:
+          name: terraform init
+          command: |
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform init
+      - run:
+          name: terraform plan
+          command: |
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform plan -out=terraform.plan
 
   apply:
     <<: *default_config
