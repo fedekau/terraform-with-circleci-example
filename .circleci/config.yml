@@ -23,6 +23,12 @@ restore_repo: &restore_repo
   restore_cache:
     key: *repo_cache_key
 
+save_repo: &save_repo
+  save_cache:
+    key: *repo_cache_key
+    paths:
+      - *working_directory
+
 set_terraform_environment: &set_terraform_environment
   run:
     name: set terraform environment
@@ -60,10 +66,7 @@ jobs:
 
               exit 1
             fi
-      - save_cache:
-          key: *repo_cache_key
-          paths:
-            - *working_directory
+      - *save_repo
 
   plan:
     <<: *default_config
@@ -82,11 +85,22 @@ jobs:
             source $BASH_ENV
             cd environments/$TERRAFORM_ENVIRONMENT
             terraform plan -out=terraform.plan
+      - *save_repo
 
   apply:
     <<: *default_config
     steps:
       - *restore_repo
+      - *set_terraform_environment
+      - run:
+          name: terraform apply
+          command: |
+            source $BASH_ENV
+            cd environments/$TERRAFORM_ENVIRONMENT
+            terraform apply terraform.plan
+            rm terraform.plan
+      - *save_repo
+
 
 workflows:
   version: 2
