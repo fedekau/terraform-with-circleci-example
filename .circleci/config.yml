@@ -1,0 +1,14 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: hashicorp/terraform:light
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - run:
+          name: terraform init
+          command: |
+            terraform -v
