@@ -22,3 +22,7 @@ module "staging-infrastructure" {
 
   environment = "${var.environment}"
 }
+
+output "web-alb-dns-name" {
+  value = "${module.staging-infrastructure.web-alb-dns-name}"
+}
