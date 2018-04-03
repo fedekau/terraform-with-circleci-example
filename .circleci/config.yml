@@ -110,16 +110,23 @@ jobs:
 
 workflows:
   version: 2
-  build_plan_apply:
+  build_plan_approve_apply:
     jobs:
       - build
       - plan:
           requires:
             - build
+      - approve:
+          filters:
+            branches:
+              only: master
+          type: approval
+          requires:
+            - plan
       - apply:
           filters:
             branches:
               only: master
           requires:
-            - plan
+            - approve
 
