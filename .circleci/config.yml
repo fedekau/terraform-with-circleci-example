@@ -80,5 +80,13 @@ workflows:
   build_plan_apply:
     jobs:
       - build
-      - plan
-      - apply
+      - plan:
+          requires:
+            - build
+      - apply:
+          filters:
+            branches:
+              only: master
+          requires:
+            - plan
+
