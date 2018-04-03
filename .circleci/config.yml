@@ -37,7 +37,7 @@ set_terraform_environment: &set_terraform_environment
 
       if [ "${CIRCLE_BRANCH}" == "master" ]; then
         echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
-      elif [ "${CIRCLE_BRANCH}" == "staging" ]; then
+      else
         echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
       fi
 
@@ -48,6 +48,22 @@ terraform_init: &terraform_init
       source $BASH_ENV
       cd environments/$TERRAFORM_ENVIRONMENT
       terraform init
+
+apply_job: &apply_job
+  <<: *default_config
+  steps:
+    - *restore_repo
+    - *set_terraform_environment
+    - *terraform_init
+    - attach_workspace:
+        at: *working_directory
+    - run:
+        name: terraform apply
+        command: |
+          source $BASH_ENV
+          cd environments/$TERRAFORM_ENVIRONMENT
+          terraform apply --auto-approve ../../terraform.plan
+
 jobs:
 
   build:
@@ -94,19 +110,9 @@ jobs:
             - terraform.plan
 
   apply:
-    <<: *default_config
-    steps:
-      - *restore_repo
-      - *set_terraform_environment
-      - *terraform_init
-      - attach_workspace:
-          at: *working_directory
-      - run:
-          name: terraform apply
-          command: |
-            source $BASH_ENV
-            cd environments/$TERRAFORM_ENVIRONMENT
-            terraform apply ../../terraform.plan
+    <<: *apply_job
+  apply-with-approval:
+    <<: *apply_job
 
 workflows:
   version: 2
@@ -117,16 +123,19 @@ workflows:
           requires:
             - build
       - approve:
-          filters:
-            branches:
-              only: master
           type: approval
           requires:
             - plan
-      - apply:
           filters:
             branches:
               only: master
+      - apply-with-approval:
           requires:
             - approve
-
+          filters:
+            branches:
+              only: master
+      - apply:
+          filters:
+            branches:
+              only: staging
