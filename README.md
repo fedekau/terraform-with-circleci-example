@@ -1,6 +1,12 @@
-**Some logo here**
+<p align="center"><img src="https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/gears.png" height="400px"></p>
 
 # terraform-with-circleci-example
+
+We all know how complex apps this days can get, so that is why I created this.
+
+It is just minor contribution to help you achieve "The Basic 2018 Web App Architecture", which looks something like the image below.
+
+![Image of the basic 2018 app architecture](https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/web-app.png)
 
 This is an example repository that you can use to kickstart your project or to
 make your current project better with some of the ideas included here.
@@ -12,22 +18,21 @@ like [CircleCI](https://circleci.com).
 
 I have followed many of the good practices described in the book [Terraform: Up & Running](https://www.terraformupandrunning.com/) and in the [CircleCI 2.0 Documentation](https://circleci.com/docs/2.0/). I will also assume you have some knowledge about those tools and [Amazon Web Services](https://aws.amazon.com) in general, no need to be an expert.
 
-
 ## Suggested workflow
 
 Assuming you have two environments, `production` and `staging`, when a new feature is requested you branch from `staging`, commit the code and open a PR to the `staging` branch, when you do, CircleCI will run two jobs, one for linting and one that will plan the changes to your `staging` infrastructure so you can review them (see image below).
 
-**image form PR**
+![Image of PR creation jobs](https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/pr.png)
 
 Once you merge the PR, if everything goes as planned CircleCI will run your jobs and will automatically deploy your infrastructure!
 
-**image after staging merge**
+![Image of jobs after staging merge](https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/staging-merge.png)
 
 After you have tested your infrastructure in `staging` you just need to open a PR from `staging` into `master` to "promote" you infrastructure into `production`.
 
 In this case we want someone to manually approve the release into master, so after you merge you need to tell CircleCI that it can proceed and it will deploy the infrastructure after the confirmation.
 
-**image after master merge**
+![Image of jobs after master merge](https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/master-merge.png)
 
 Now that you know what we want to achieve we will dive into the code...get ready!
 
@@ -83,6 +88,8 @@ This module is only glue for the modules it includes, in the [modules/environmen
 It represents the "cables" of our infrastructure, it only has [one variable](https://github.com/fedekau/terraform-with-circleci-example/blob/staging/modules/infrastructure/modules/network/variables.tf) that is the name of the environment.
 
 It outputs some other variables like the [CIDR Blocks](https://es.wikipedia.org/wiki/Classless_Inter-Domain_Routing) of the network, the ID of the VPC, and IDs of the public and private subnets.
+
+This was inspired by [AWS VPC with Public and Private Subnets](https://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_Scenario2.html)
 
 ### Databases module
 
