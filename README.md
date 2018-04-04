@@ -1,4 +1,4 @@
-<p align="center"><img src="https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/gears.png" height="400px"></p>
+<p align="center"><img src="https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/gears.png" height="200px"></p>
 
 # terraform-with-circleci-example
 
@@ -6,7 +6,7 @@ We all know how complex apps this days can get, so that is why I created this.
 
 It is just minor contribution to help you achieve "The Basic 2018 Web App Architecture", which looks something like the image below.
 
-![Image of the basic 2018 app architecture](https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/web-app.png)
+<p align="center"><img src="https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/web-app.jpg" height="300px"></p>
 
 This is an example repository that you can use to kickstart your project or to
 make your current project better with some of the ideas included here.
