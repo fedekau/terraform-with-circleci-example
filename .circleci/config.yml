@@ -136,6 +136,8 @@ workflows:
             branches:
               only: master
       - apply:
+          requires:
+            - plan
           filters:
             branches:
               only: staging
