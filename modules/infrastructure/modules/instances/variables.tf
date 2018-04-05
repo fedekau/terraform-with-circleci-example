@@ -7,7 +7,7 @@ variable "public-a-subnet-id" {}
 variable "public-b-subnet-id" {}
 
 variable "count" {
-  default = 1
+  default = 2
 }
 
 variable "db_endpoint" {}
