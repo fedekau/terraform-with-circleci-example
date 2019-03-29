@@ -116,3 +116,4 @@ See [LICENSE.md](https://github.com/fedekau/terraform-with-circleci-example/blob
 - Icons made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 - [WyeWorks](https://www.wyeworks.com) for allowing me to create 40% of this repository during my working hours as part of the [Continuous Learning policy](https://wyeworks.com/blog/2015/7/16/technical-thursdays-or-how-we-do-continuous-learning)
 
+Version 1.3

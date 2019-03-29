@@ -1,12 +1,12 @@
 module "network" {
   source = "modules/network"
-
+  prefix = "${var.prefix}"
   environment = "${var.environment}"
 }
 
 module "databases" {
   source = "modules/databases"
-
+  prefix = "${var.prefix}"
   environment = "${var.environment}"
 
   vpc-id              = "${module.network.vpc-id}"
@@ -17,7 +17,7 @@ module "databases" {
 
 module "instances" {
   source = "modules/instances"
-
+  prefix = "${var.prefix}"
   environment = "${var.environment}"
 
   vpc-id         = "${module.network.vpc-id}"

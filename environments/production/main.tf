@@ -4,29 +4,21 @@ provider "aws" {
 
 module "production-state" {
   source = "../../modules/state"
-
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
 
 terraform {
   backend "s3" {
-    bucket  = "production-state-file"
-    key     = "terraform.tfstate"
-    region  = "us-east-1"
+    bucket  = "production-state-terraform-circleci-lab"
+    key     = "eg/terraform.tfstate"
+    region  = "us-west-2"
     encrypt = true
   }
 }
 
 module "production-infrastructure" {
   source = "../../modules/infrastructure"
-
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
-}
-
-output "web-alb-dns-name" {
-  value = "${module.production-infrastructure.web-alb-dns-name}"
-}
-
-output "web-instance-ips" {
-  value = "${module.production-infrastructure.web-instance-ips}"
 }

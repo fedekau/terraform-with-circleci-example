@@ -11,7 +11,7 @@ data "template_file" "init" {
   vars {
     db_endpoint = "${var.db_endpoint}"
     db_port     = 3306
-    db_name     = "${var.environment}"
+    db_name     = "${var.prefix}${var.environment}"
     db_username = "username"
     db_password = "password"
   }
@@ -36,6 +36,7 @@ resource "aws_instance" "web" {
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
   tags {
+    Name = "${var.prefix}-terraform-circleci-lab"
     environment = "${var.environment}"
   }
 }

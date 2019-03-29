@@ -1,4 +1,5 @@
 variable "environment" {}
+variable "prefix" {}
 
 variable "vpc-id" {}
 variable "vpc-cidr-block" {}
