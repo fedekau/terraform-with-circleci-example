@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "state-file-bucket" {
-  bucket = "${var.prefix}-${var.environment}-state-file-terraform-circleci-lab"
+  bucket = "${var.environment}-state-terraform-circleci-lab"
 
   versioning {
     enabled = true
