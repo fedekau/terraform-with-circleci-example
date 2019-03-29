@@ -4,7 +4,7 @@ provider "aws" {
 
 module "staging-state" {
   source = "../../modules/state"
-
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
 
@@ -19,14 +19,6 @@ terraform {
 
 module "staging-infrastructure" {
   source = "../../modules/infrastructure"
-
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
-}
-
-output "web-alb-dns-name" {
-  value = "${module.staging-infrastructure.web-alb-dns-name}"
-}
-
-output "web-instance-ips" {
-  value = "${module.staging-infrastructure.web-instance-ips}"
 }
