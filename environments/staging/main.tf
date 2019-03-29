@@ -10,7 +10,7 @@ module "staging-state" {
 
 terraform {
   backend "s3" {
-    bucket  = "biorad-staging-state-file-terraform-circleci-lab"
+    bucket  = "biorad-staging-state-file-terraform-circleci-lab-eg"
     key     = "terraform.tfstate"
     region  = "us-west-2"
     encrypt = true
