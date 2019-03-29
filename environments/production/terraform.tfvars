@@ -1,3 +1,3 @@
 environment = "production"
-
-region = "us-west-2"
+prefix      = "eg"
+region      = "us-west-2"
