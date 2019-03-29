@@ -16,7 +16,7 @@ default_config: &default_config
     BASH_ENV: /root/.bashrc
 
 repo_cache_key: &repo_cache_key
-  v1-repo-{{ .Branch }}-{{ .Revision }}
+  v1-1-repo-{{ .Branch }}-{{ .Revision }}
 
 # Step to restore repository from cache
 restore_repo: &restore_repo
