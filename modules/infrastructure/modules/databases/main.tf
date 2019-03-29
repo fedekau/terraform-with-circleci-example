@@ -8,13 +8,13 @@ resource "aws_db_subnet_group" "rds-private-subnet-group" {
 }
 
 resource "aws_db_instance" "master" {
-  identifier           = "${var.prefix}-${var.environment}-master"
+  identifier           = "${var.prefix}${var.environment}"
   allocated_storage    = 8
   storage_type         = "gp2"
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  name                 = "${var.environment}"
+  name                 = "${var.prefix}${var.environment}"
   username             = "username"
   password             = "password"
   db_subnet_group_name = "${aws_db_subnet_group.rds-private-subnet-group.name}"
