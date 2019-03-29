@@ -11,7 +11,7 @@ module "staging-state" {
 terraform {
   backend "s3" {
     bucket  = "staging-state-terraform-circleci-lab"
-    key     = "terraform.tfstate"
+    key     = "eg/terraform.tfstate"
     region  = "us-west-2"
     encrypt = true
   }
