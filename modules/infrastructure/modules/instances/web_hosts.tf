@@ -11,7 +11,7 @@ data "template_file" "init" {
   vars {
     db_endpoint = "${var.db_endpoint}"
     db_port     = 3306
-    db_name     = "${var.prefix}-${var.environment}-master"
+    db_name     = "${var.prefix}${var.environment}"
     db_username = "username"
     db_password = "password"
   }
