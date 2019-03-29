@@ -4,7 +4,7 @@ provider "aws" {
 
 module "production-state" {
   source = "../../modules/state"
-
+  prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
 
