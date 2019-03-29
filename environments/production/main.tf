@@ -10,7 +10,7 @@ module "production-state" {
 
 terraform {
   backend "s3" {
-    bucket  = "biorad-production-state-file-terraform-circleci-lab-eg"
+    bucket  = "production-state-file-terraform-circleci-lab"
     key     = "terraform.tfstate"
     region  = "us-west-2"
     encrypt = true
