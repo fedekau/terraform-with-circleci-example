@@ -1,9 +1,10 @@
+    
 provider "aws" {
   region = "${var.region}"
 }
 
 module "production-state" {
-  source = "../../modules/state"
+  source      = "../../modules/state"
   prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
@@ -18,7 +19,7 @@ terraform {
 }
 
 module "production-infrastructure" {
-  source = "../../modules/infrastructure"
+  source      = "../../modules/infrastructure"
   prefix      = "${var.prefix}"
   environment = "${var.environment}"
 }
