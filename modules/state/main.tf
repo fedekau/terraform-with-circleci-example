@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "state-file-bucket" {
-  bucket = "${var.environment}-state-file"
+  bucket = "biorad-${var.environment}-state-file-terraform-circleci-lab-eg"
 
   versioning {
     enabled = true
@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "state-file-bucket" {
 }
 
 resource "aws_dynamodb_table" "state-file-locking-table" {
-  name           = "${var.environment}-state-file-locking"
+  name           = "${var.environment}-state-file-locking-eg"
   hash_key       = "LockID"
   read_capacity  = 20
   write_capacity = 20
