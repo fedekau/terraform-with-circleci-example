@@ -36,6 +36,7 @@ resource "aws_instance" "web" {
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
   tags {
+    name = "${var.prefix}-terraform-circleci-lab"
     environment = "${var.environment}"
   }
 }
