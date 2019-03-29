@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "rds-private-subnet-group" {
-  name       = "rds-private-subnet-group"
+  name       = "${var.prefix}-${var.environment}-rds-private-subnet-group"
   subnet_ids = ["${var.private-a-subnet-id}", "${var.private-b-subnet-id}"]
 
   tags {
