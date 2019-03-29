@@ -1,17 +1,19 @@
 resource "aws_s3_bucket" "state-file-bucket" {
-  bucket = "biorad-${var.environment}-state-file-terraform-circleci-lab-eg"
+  bucket = "${var.prefix}-${var.environment}-state-file-terraform-circleci-lab"
 
   versioning {
     enabled = true
   }
 
   tags {
-    environment = "${var.environment}"
+    env = "${var.environment}"
+    dept = "git"
+    app  = "terraform-circleci-lab"
   }
 }
 
 resource "aws_dynamodb_table" "state-file-locking-table" {
-  name           = "${var.environment}-state-file-locking-eg"
+  name           = "${var.prefix}-${var.environment}-state-file-locking"
   hash_key       = "LockID"
   read_capacity  = 20
   write_capacity = 20
@@ -22,6 +24,8 @@ resource "aws_dynamodb_table" "state-file-locking-table" {
   }
 
   tags {
-    environment = "${var.environment}"
+    env = "${var.environment}"
+    dept = "git"
+    app  = "terraform-circleci-lab"
   }
 }
