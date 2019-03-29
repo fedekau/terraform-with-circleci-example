@@ -1,3 +1,3 @@
 variable "environment" {}
 variable "region" {}
-variable "env" {}
+variable "prefix" {}
