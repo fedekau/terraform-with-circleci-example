@@ -1,3 +1,3 @@
 environment = "staging"
-env         = "eg"
+prefix      = "eg"
 region      = "us-west-2"
