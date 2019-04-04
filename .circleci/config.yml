@@ -32,13 +32,14 @@ save_repo: &save_repo
 set_terraform_environment: &set_terraform_environment
   run:
     name: set terraform environment
-    command: |
+      aws configure set default.region ${AWS_DEFAULT_REGION}
       cd && touch $BASH_ENV
 
       if [ "${CIRCLE_BRANCH}" == "master" ]; then
         echo 'export TERRAFORM_ENVIRONMENT=production' >> $BASH_ENV
       else
         echo 'export TERRAFORM_ENVIRONMENT=staging' >> $BASH_ENV
+
       fi
 
 terraform_init: &terraform_init
