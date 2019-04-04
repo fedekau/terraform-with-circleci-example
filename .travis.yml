@@ -1,0 +1,22 @@
+notifications:
+  email: false
+
+#Install a Terraform executable locally
+before_install:
+- export AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION
+- wget https://releases.hashicorp.com/terraform/0.10.6/terraform_0.10.6_linux_amd64.zip
+- unzip terraform_0.10.6_linux_amd64.zip
+
+#These two steps will effectively validate our terraform and output a list of any changes to be made to our infrastructure
+script:
+- ./terraform init -var-file=./environments/staging/terraform.tfvars  ./environments/staging
+- ./terraform plan -var-file=./environments/staging/terraform.tfvars  ./environments/staging
+
+deploy:
+#Roll out any terraform changes required
+- provider: script
+  script:
+    - ./terraform plan -var-file=./environments/staging/terraform.tfvars  ./environments/staging
+  skip_cleanup: true
+  on:
+    branch: staging

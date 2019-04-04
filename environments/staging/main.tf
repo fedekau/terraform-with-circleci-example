@@ -10,9 +10,9 @@ module "staging-state" {
 
 terraform {
   backend "s3" {
-    bucket  = "staging-state-file"
+    bucket  = "loanitt-staging-state-file"
     key     = "terraform.tfstate"
-    region  = "us-west-1"
+    region  = "eu-west-1"
     encrypt = true
   }
 }
