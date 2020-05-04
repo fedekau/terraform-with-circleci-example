@@ -8,7 +8,7 @@ locals {
 data "template_file" "init" {
   template = "${file("${path.module}/templates/init.tpl")}"
 
-  vars {
+  vars = {
     db_endpoint = "${var.db_endpoint}"
     db_port     = 3306
     db_name     = "${var.environment}"
@@ -35,7 +35,7 @@ resource "aws_instance" "web" {
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
-  tags {
+  tags = {
     environment = "${var.environment}"
   }
 }
