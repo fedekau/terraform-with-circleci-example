@@ -8,7 +8,7 @@ locals {
 data "template_file" "init" {
   template = "${file("${path.module}/templates/init.tpl")}"
 
-  vars {
+  vars = {
     db_endpoint = "${var.db_endpoint}"
     db_port     = 3306
     db_name     = "${var.environment}"
@@ -22,7 +22,7 @@ data "template_file" "instance-status" {
 }
 
 resource "aws_instance" "web" {
-  count = "${var.count}"
+  count = "${var.numberOfInstances}"
 
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
@@ -35,13 +35,13 @@ resource "aws_instance" "web" {
 
   key_name = "${aws_key_pair.id_dummy.key_name}"
 
-  tags {
+  tags = {
     environment = "${var.environment}"
   }
 }
 
 resource "null_resource" "web" {
-  count = "${var.count}"
+  count = "${var.numberOfInstances}"
 
   connection {
     type        = "ssh"

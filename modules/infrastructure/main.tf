@@ -1,11 +1,11 @@
 module "network" {
-  source = "modules/network"
+  source = "./modules/network"
 
   environment = "${var.environment}"
 }
 
 module "databases" {
-  source = "modules/databases"
+  source = "./modules/databases"
 
   environment = "${var.environment}"
 
@@ -16,7 +16,7 @@ module "databases" {
 }
 
 module "instances" {
-  source = "modules/instances"
+  source = "./modules/instances"
 
   environment = "${var.environment}"
 

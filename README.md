@@ -4,7 +4,7 @@
 
 We all know how complex apps this days can get, so that is why I created this.
 
-It is just minor contribution to help you achieve "The Basic 2018 Web App Architecture", which looks something like the image below.
+It is just minor contribution to help you achieve "The Basic Web App Architecture", which looks something like the image below.
 
 <p align="center"><img src="https://raw.githubusercontent.com/fedekau/terraform-with-circleci-example/staging/.images/web-app.jpg" height="300px"></p>
 
@@ -115,4 +115,3 @@ See [LICENSE.md](https://github.com/fedekau/terraform-with-circleci-example/blob
 
 - Icons made by [Gregor Cresnar](https://www.flaticon.com/authors/gregor-cresnar) from [www.flaticon.com](https://www.flaticon.com/) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 - [WyeWorks](https://www.wyeworks.com) for allowing me to create 40% of this repository during my working hours as part of the [Continuous Learning policy](https://wyeworks.com/blog/2015/7/16/technical-thursdays-or-how-we-do-continuous-learning)
-
