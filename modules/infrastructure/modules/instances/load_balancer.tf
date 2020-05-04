@@ -28,7 +28,7 @@ resource "aws_alb_listener" "web" {
 }
 
 resource "aws_alb_target_group_attachment" "web" {
-  count = "${var.count}"
+  count = "${var.numberOfInstances}"
 
   target_group_arn = "${aws_alb_target_group.web.arn}"
   target_id        = "${element(aws_instance.web.*.id, count.index)}"

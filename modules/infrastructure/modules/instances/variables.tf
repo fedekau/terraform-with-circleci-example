@@ -6,7 +6,7 @@ variable "vpc-cidr-block" {}
 variable "public-a-subnet-id" {}
 variable "public-b-subnet-id" {}
 
-variable "count" {
+variable "numberOfInstances" {
   default = 2
 }
 

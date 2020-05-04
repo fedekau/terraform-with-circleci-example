@@ -22,7 +22,7 @@ data "template_file" "instance-status" {
 }
 
 resource "aws_instance" "web" {
-  count = "${var.count}"
+  count = "${var.numberOfInstances}"
 
   ami           = "${data.aws_ami.ubuntu.id}"
   instance_type = "t2.micro"
@@ -41,7 +41,7 @@ resource "aws_instance" "web" {
 }
 
 resource "null_resource" "web" {
-  count = "${var.count}"
+  count = "${var.numberOfInstances}"
 
   connection {
     type        = "ssh"
