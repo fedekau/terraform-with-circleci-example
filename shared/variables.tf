@@ -1,2 +1,4 @@
 variable "environment" {}
-variable "region" {}
+variable "region" {
+  default = "us-west-1"
+}
