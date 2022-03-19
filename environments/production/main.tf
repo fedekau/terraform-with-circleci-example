@@ -1,11 +1,11 @@
 provider "aws" {
-  region = "${var.region}"
+  region = var.region
 }
 
 module "production-state" {
   source = "../../modules/state"
 
-  environment = "${var.environment}"
+  environment = var.environment
 }
 
 terraform {
@@ -20,13 +20,13 @@ terraform {
 module "production-infrastructure" {
   source = "../../modules/infrastructure"
 
-  environment = "${var.environment}"
+  environment = var.environment
 }
 
 output "web-alb-dns-name" {
-  value = "${module.production-infrastructure.web-alb-dns-name}"
+  value = module.production-infrastructure.web-alb-dns-name
 }
 
 output "web-instance-ips" {
-  value = "${module.production-infrastructure.web-instance-ips}"
+  value = module.production-infrastructure.web-instance-ips
 }

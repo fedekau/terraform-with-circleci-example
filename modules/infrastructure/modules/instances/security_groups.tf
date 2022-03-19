@@ -1,7 +1,7 @@
 resource "aws_security_group" "web" {
   name        = "Web"
   description = "Web"
-  vpc_id      = "${var.vpc-id}"
+  vpc_id      = var.vpc-id
 
   egress {
     from_port   = 80
@@ -42,7 +42,7 @@ resource "aws_security_group" "web" {
 resource "aws_security_group" "web-alb" {
   name        = "web-alb"
   description = "Web ALB"
-  vpc_id      = "${var.vpc-id}"
+  vpc_id      = var.vpc-id
 
   ingress {
     from_port   = 80

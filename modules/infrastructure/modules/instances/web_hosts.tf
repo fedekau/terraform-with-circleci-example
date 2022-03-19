@@ -6,7 +6,7 @@ locals {
 }
 
 data "template_file" "init" {
-  template = "${file("${path.module}/templates/init.tpl")}"
+  template = file("${path.module}/templates/init.tpl")
 
   vars = {
     db_endpoint = "${var.db_endpoint}"
@@ -18,22 +18,22 @@ data "template_file" "init" {
 }
 
 data "template_file" "instance-status" {
-  template = "${file("${path.module}/templates/instance-status.tpl")}"
+  template = file("${path.module}/templates/instance-status.tpl")
 }
 
 resource "aws_instance" "web" {
-  count = "${var.numberOfInstances}"
+  count = var.numberOfInstances
 
-  ami           = "${data.aws_ami.ubuntu.id}"
+  ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
 
-  subnet_id = "${element(local.subnets_ids, count.index)}"
+  subnet_id = element(local.subnets_ids, count.index)
 
   vpc_security_group_ids = [
     "${aws_security_group.web.id}",
   ]
 
-  key_name = "${aws_key_pair.id_dummy.key_name}"
+  key_name = aws_key_pair.id_dummy.key_name
 
   tags = {
     environment = "${var.environment}"
@@ -41,22 +41,22 @@ resource "aws_instance" "web" {
 }
 
 resource "null_resource" "web" {
-  count = "${var.numberOfInstances}"
+  count = var.numberOfInstances
 
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = "${file("../../.keys/id_dummy")}"
-    host        = "${element(aws_instance.web.*.public_ip, count.index)}"
+    private_key = file("../../.keys/id_dummy")
+    host        = element(aws_instance.web.*.public_ip, count.index)
   }
 
   provisioner "file" {
-    content     = "${data.template_file.init.rendered}"
+    content     = data.template_file.init.rendered
     destination = "/home/ubuntu/init.sh"
   }
 
   provisioner "file" {
-    content     = "${data.template_file.instance-status.rendered}"
+    content     = data.template_file.instance-status.rendered
     destination = "/home/ubuntu/instance-status.conf"
   }
 
