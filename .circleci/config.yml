@@ -75,21 +75,7 @@ jobs:
           name: terraform fmt
           command: |
             source $BASH_ENV
-            cd environments/$TERRAFORM_ENVIRONMENT
-
-            if [ $(terraform fmt | grep -v .terraform | tee fmt_result.txt | wc -l) -gt 0 ]; then
-              echo "Format of this terraform files is not appropiate:"
-              echo
-
-              cat fmt_result.txt
-              rm fmt_result.txt
-              git checkout -- .
-
-              echo
-              echo "Please run terraform fmt"
-
-              exit 1
-            fi
+            terraform fmt -check -recursive || echo "Please run 'terraform fmt -recursive' first"
       - *save_repo
 
   plan:
